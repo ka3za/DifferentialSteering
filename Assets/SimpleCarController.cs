@@ -39,28 +39,36 @@ public class SimpleCarController : MonoBehaviour
     public void FixedUpdate()
     {
         float motor = maxMotorTorque * Input.GetAxis("Vertical");
-        float steering = maxSteeringAngle * Input.GetAxis("Horizontal");
+        float steering = maxMotorTorque * Input.GetAxis("Horizontal");
+
+        //Debug.Log(steering);
 
         foreach (AxleInfo axleInfo in axleInfos)
         {
-            if (axleInfo.steering)
-            {
-                axleInfo.leftWheel.steerAngle = steering;
-                axleInfo.rightWheel.steerAngle = steering;
-            }
             if (axleInfo.motor)
             {
                 axleInfo.leftWheel.motorTorque = motor;
                 axleInfo.rightWheel.motorTorque = motor;
                 if (Input.GetKey(KeyCode.Space))
                 {
-                    axleInfo.leftWheel.brakeTorque = 1;
-                    axleInfo.rightWheel.brakeTorque = 1;
+                    axleInfo.leftWheel.brakeTorque = 255;
+                    axleInfo.rightWheel.brakeTorque = 255;
                 }
                 else
                 {
                     axleInfo.leftWheel.brakeTorque = 0;
                     axleInfo.rightWheel.brakeTorque = 0;
+                }
+
+                if (Input.GetKey(KeyCode.RightArrow))
+                {
+                    axleInfo.rightWheel.motorTorque = steering;
+                    Debug.Log("Right");
+                }
+                if (Input.GetKey(KeyCode.LeftArrow))
+                {
+                    axleInfo.leftWheel.motorTorque = -steering;
+                    Debug.Log("Left");
                 }
             }
             ApplyLocalPositionToVisuals(axleInfo.leftWheel);
