@@ -9,12 +9,13 @@ public class WheelParameters : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-        radius = GetComponent<SphereCollider>().radius;
+        
         //indicator = GetComponentInChildren<GameObject>();
 	}
 	
 	// Update is called once per frame
 	void Update () {
+        radius = GetComponent<SphereCollider>().radius;
         indicator.transform.localPosition = Vector3.up * radius;
 	}
 }

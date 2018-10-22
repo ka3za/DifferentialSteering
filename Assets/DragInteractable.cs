@@ -35,7 +35,7 @@ void Update()
         {
             RaycastHit hit;
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-            if (Physics.Raycast(ray, out hit))
+            if (Physics.Raycast(ray, out hit) && hit.transform.tag == "Interactable")
                 grabbed = hit.transform;
         }
     }
