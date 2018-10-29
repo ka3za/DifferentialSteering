@@ -7,7 +7,7 @@ public class DragInteractable : MonoBehaviour {
     //Meget af det her skal sikkert på det gribte objekt.
 
     Transform grabbed;
-    float grabDistance = 10.0f;
+    float grabDistance = 7.0f;
 
 
 void Update()
@@ -44,7 +44,7 @@ void Update()
     {
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
         Vector3 position = transform.position + transform.forward * grabDistance;
-        Plane plane = new Plane(-transform.forward, position);
+        Plane plane = new Plane(-Vector3.forward, position);
         float distance;
         if (plane.Raycast(ray, out distance))
         {
