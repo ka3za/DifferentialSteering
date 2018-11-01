@@ -11,7 +11,10 @@ public class RotationPointMovement : MonoBehaviour {
     public GameObject RWheel;
     public GameObject LWheel;
 
+    public float radius;
+
     Vector3 rotationPoint;
+    Vector3 direction;
 
 	// Use this for initialization
 	void Start () {
@@ -30,10 +33,21 @@ public class RotationPointMovement : MonoBehaviour {
 
 	// Update is called once per frame
 	void Update () {
+
+        direction = transform.position - rotationPoint;
+
+        radius = Vector3.Distance(transform.position, rotationPoint);
+
         if (Input.GetKey(KeyCode.Space))
         {
+            Quaternion rot = Quaternion.AngleAxis(180*Time.deltaTime*speed, rotationPoint);
+            transform.position = rotationPoint + rot * direction;
+            transform.localRotation = rot;
+
+
             //transform.Translate(Vector3.forward * speed * Time.deltaTime);
-            transform.RotateAround(rotationPoint, Vector3.up, speed * Time.deltaTime);
+            //transform.RotateAround(rotationPoint, Vector3.up, speed * Time.deltaTime);
+
             //transform.SetPositionAndRotation(RotatePointAroundPivot(transform.position, rotationPoint, transform.up), Quaternion.LookRotation(rotationPoint - transform.position));
             //transform.position = RotatePointAroundPivot(transform.position, rotationPoint, transform.up);
 
@@ -75,11 +89,11 @@ public class RotationPointMovement : MonoBehaviour {
         //Skal Fikses
         if (transform.magnitude > rotationPoint.magnitude)
         {
-            Debug.Log("Left");
+            //Debug.Log("Left");
         }
         if (transform.magnitude < rotationPoint.magnitude)
         {
-            Debug.Log("Right");
+            //Debug.Log("Right");
         }
     }
 

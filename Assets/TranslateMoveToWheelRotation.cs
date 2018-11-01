@@ -60,7 +60,7 @@ public class TranslateMoveToWheelRotation : MonoBehaviour {
             //float displacement = Vector3.Angle(transform.position, centerMarker.transform.position);
             float displacement = GetAngle(transform.position, centerMarker.transform.position);
             Wheel.transform.eulerAngles = new Vector3(0, 0, displacement + 90);
-            Debug.Log(displacement);
+            //Debug.Log(displacement);
 
             
 
