@@ -6,42 +6,44 @@ public class DifferentialSteeringController : MonoBehaviour {
 
     private float m_rightWheelInput;
     private float m_leftWheelInput;
-
+    
     public WheelCollider BigWheelRightC, BigWheelLeftC;
     public WheelCollider SmallWheelRightC, SmallWheelLeftC;
     public Transform BigWheelRightT, BigWheelLeftT;
     public Transform SmallWheelRightT, SmallWheelLeftT;
-    public float motorForce = 10;
+    [Range(1, 20)]
+    public int motorForce = 10;
+    [Range(0.01f, 1.00f)]
+    public float WheelPartnerHelp = .02f;
 
     private void FixedUpdate()
     {
-        //if (Input.GetKey(KeyCode.RightControl))
-        //{
-            GetRightInput();
-        //}
-        //if (Input.GetKey(KeyCode.LeftControl))
-        //{
-            GetLeftInput();
-        //}
+        GetRightInput();
+        GetLeftInput();
         Accelerate();
+        //FrontWheelsSteering();
         UpdateWheelPoses();
     }
 
-    //Only Forward
     public void GetRightInput()
     {
-        m_rightWheelInput = Input.GetAxis("Horizontal");//LerpToOne();
+        m_rightWheelInput = Input.GetAxis("Horizontal");
     }
-    //Only Forward
+
     public void GetLeftInput()
     {
-        m_leftWheelInput = Input.GetAxis("Vertical");//LerpToOne();
+        m_leftWheelInput = Input.GetAxis("Vertical");
     }
 
     private void Accelerate()
     {
-        BigWheelRightC.motorTorque = m_rightWheelInput * motorForce;
-        BigWheelLeftC.motorTorque = m_leftWheelInput * motorForce;
+        BigWheelRightC.motorTorque = m_rightWheelInput + (m_leftWheelInput * WheelPartnerHelp) * motorForce;
+        BigWheelLeftC.motorTorque = m_leftWheelInput + (m_rightWheelInput * WheelPartnerHelp) * motorForce;
+    }
+
+    private void FrontWheelsSteering()
+    {
+        Vector3 FrontRot = Quaternion.identity.eulerAngles;
     }
 
     private void UpdateWheelPoses()
@@ -61,20 +63,5 @@ public class DifferentialSteeringController : MonoBehaviour {
 
         _transform.position = _pos;
         _transform.rotation = _quat;
-    }
-
-    float LerpToOne()
-    {
-        float valToBeLerped = 0;
-        float tParam = 0;
-        float speed = 0.3f;
-
-        if (tParam < 1)
-        {
-            tParam += Time.deltaTime * speed; //This will increment tParam based on Time.deltaTime multiplied by a speed multiplier
-            valToBeLerped = Mathf.Lerp(0, 1, tParam);
-        }
-
-        return valToBeLerped;
     }
 }
