@@ -6,15 +6,16 @@ public class DifferentialSteeringController : MonoBehaviour {
 
     private float m_rightWheelInput;
     private float m_leftWheelInput;
-    
+    private float input;
+
     public WheelCollider BigWheelRightC, BigWheelLeftC;
-    public WheelCollider SmallWheelRightC, SmallWheelLeftC;
+    //public WheelCollider SmallWheelRightC, SmallWheelLeftC;
     public Transform BigWheelRightT, BigWheelLeftT;
-    public Transform SmallWheelRightT, SmallWheelLeftT;
+    //public Transform SmallWheelRightT, SmallWheelLeftT;
     [Range(1, 20)]
-    public int motorForce = 10;
-    [Range(0.01f, 1.00f)]
-    public float WheelPartnerHelp = .02f;
+    public int MotorForce = 10;
+    [Range(0, 100)]
+    public int PartnerWheelHelp = 20;
 
     private void FixedUpdate()
     {
@@ -35,10 +36,17 @@ public class DifferentialSteeringController : MonoBehaviour {
         m_leftWheelInput = Input.GetAxis("Vertical");
     }
 
+    public void SetInput(float force)
+    {
+        input = force;
+    }
+
     private void Accelerate()
     {
-        BigWheelRightC.motorTorque = m_rightWheelInput + (m_leftWheelInput * WheelPartnerHelp) * motorForce;
-        BigWheelLeftC.motorTorque = m_leftWheelInput + (m_rightWheelInput * WheelPartnerHelp) * motorForce;
+        //BigWheelRightC.motorTorque = (m_rightWheelInput * (PartnerWheelHelp / 100)) +m_rightWheelInput * MotorForce;
+        //BigWheelLeftC.motorTorque = (m_rightWheelInput * (PartnerWheelHelp / 100))+m_leftWheelInput  * MotorForce;
+        BigWheelRightC.motorTorque = input;
+        BigWheelLeftC.motorTorque = input;
     }
 
     private void FrontWheelsSteering()
@@ -50,8 +58,8 @@ public class DifferentialSteeringController : MonoBehaviour {
     {
         UpdateWheelPose(BigWheelRightC, BigWheelRightT);
         UpdateWheelPose(BigWheelLeftC, BigWheelLeftT);
-        UpdateWheelPose(SmallWheelRightC, SmallWheelRightT);
-        UpdateWheelPose(SmallWheelLeftC, SmallWheelLeftT);
+        //UpdateWheelPose(SmallWheelRightC, SmallWheelRightT);
+        //UpdateWheelPose(SmallWheelLeftC, SmallWheelLeftT);
     }
 
     private void UpdateWheelPose(WheelCollider _collider, Transform _transform)
